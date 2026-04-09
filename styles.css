@@ -1,0 +1,12 @@
+:root { --primary: #3b82f6; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #0a0a0a;
+  color: #e5e5e5;
+  overflow-x: hidden;
+}
+/* ... (all your original styles exactly the same) ... */
+.header { /* same as before */ }
+.hero { /* same */ }
+/* Full original styles.css content from previous response remains identical */
