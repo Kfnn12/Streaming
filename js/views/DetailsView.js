@@ -1,9 +1,9 @@
 import { createEpisodeButton } from '../components/EpisodeButton.js';
 
-export function renderDetails(container, anime, startWatching, goHome) {
+export function renderDetails(container, anime, startWatching) {
   container.innerHTML = `
     <div id="detailsView" class="max-w-7xl mx-auto px-6 py-12">
-      <button onclick="${goHome}" class="flex items-center gap-2 text-blue-400 hover:text-blue-500 mb-8 font-medium">← Back to Home</button>
+      <button id="detailsBackBtn" class="flex items-center gap-2 text-blue-400 hover:text-blue-500 mb-8 font-medium">← Back to Home</button>
       <div class="flex flex-col lg:flex-row gap-10">
         <div class="lg:w-1/3"><img id="detailPoster" class="w-full rounded-3xl shadow-2xl" alt="Poster"></div>
         <div class="lg:w-2/3">
@@ -17,9 +17,9 @@ export function renderDetails(container, anime, startWatching, goHome) {
     </div>
   `;
 
-  // Populate
+  // Populate data
   document.getElementById('detailPoster').src = anime.posterImage || anime.poster || anime.image || '';
-  document.getElementById('detailTitle').textContent = anime.name || anime.title || '';
+  document.getElementById('detailTitle').textContent = anime.name || anime.title || 'Untitled';
   document.getElementById('detailDesc').textContent = anime.synopsis || anime.description || "No description available.";
 
   const totalEps = anime.providerEpisodes?.length || anime.totalEpisodes || "?";
@@ -29,14 +29,19 @@ export function renderDetails(container, anime, startWatching, goHome) {
     <span class="bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full text-sm font-medium border border-amber-500/30 flex items-center gap-2"><i class="fa-solid fa-star text-xs"></i> ${anime.rating || anime.score || 'N/A'}</span>
   `;
 
+  // FIXED: Episode list rendering
   const epContainer = document.getElementById('episodeList');
   epContainer.innerHTML = '';
-  if (!anime.providerEpisodes?.length) {
-    epContainer.innerHTML = '<div class="col-span-full text-center text-gray-400 py-4">No episodes available.</div>';
+  if (!anime.providerEpisodes || !anime.providerEpisodes.length) {
+    epContainer.innerHTML = '<div class="col-span-full text-center text-gray-400 py-4">No episodes available yet.</div>';
     return;
   }
+
   anime.providerEpisodes.forEach((ep, i) => {
     const btn = createEpisodeButton(ep, i, startWatching);
     epContainer.appendChild(btn);
   });
+
+  // FIXED: Back button uses global function (no template string issue)
+  document.getElementById('detailsBackBtn').onclick = () => window.goHome();
 }
