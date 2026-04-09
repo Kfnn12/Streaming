@@ -6,7 +6,74 @@ body {
   color: #e5e5e5;
   overflow-x: hidden;
 }
-/* ... (all your original styles exactly the same) ... */
-.header { /* same as before */ }
-.hero { /* same */ }
-/* Full original styles.css content from previous response remains identical */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.4s ease;
+}
+.hero {
+  height: 85vh;
+  position: relative;
+  overflow: hidden;
+}
+.hero img { width: 100%; height: 100%; object-fit: cover; }
+.spotlight-content {
+  position: absolute;
+  bottom: 15%;
+  left: 5%;
+  max-width: 650px;
+  z-index: 10;
+}
+.card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.card:hover { transform: translateY(-12px) scale(1.03); }
+.card img { transition: transform 0.6s ease; }
+.card:hover img { transform: scale(1.12); }
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.scroll-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  scrollbar-width: none;
+}
+.scroll-container::-webkit-scrollbar { display: none; }
+.episode-btn {
+  background: #1f1f1f;
+  border: 1px solid #333;
+  transition: all 0.2s;
+}
+.episode-btn:hover {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+.video-container {
+  position: relative;
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+.video-container.css-fullscreen {
+  position: fixed !important;
+  top: 0 !important; left: 0 !important;
+  width: 100vw !important; height: 100vh !important;
+  z-index: 9999 !important;
+  border-radius: 0 !important;
+}
+.video-container.css-fullscreen video { height: 100% !important; }
