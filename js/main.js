@@ -38,30 +38,38 @@ function showView(viewId) {
   if (active) active.classList.remove('hidden');
 }
 
+// ... (keep everything else the same)
+
 async function showAnimeDetails(id) {
   const video = document.getElementById('videoPlayer');
   if (video) video.pause();
+
   const raw = await getAnimeDetails(id);
   selectedAnime = raw;
-  selectedAnime.providerEpisodes = raw.providerEpisodes || raw.episodes || [];
-  renderDetails(app, selectedAnime, startWatching, () => { app.innerHTML = ''; renderHome(app, homeData, showAnimeDetails, showCategory); });
+
+  renderDetails(app, selectedAnime, startWatching);
 }
 
 async function startWatching(episodeId, episodeNum) {
-  if (!episodeId) return alert("Stream unavailable");
+  if (!episodeId) return alert("Sorry, the stream link for this episode is unavailable.");
+
   const { streamUrl, tracks } = await getEpisodeSources(episodeId);
-  if (!streamUrl) return alert("No stream found");
+  if (!streamUrl) return alert("No stream source found for this episode.");
 
   currentStreamUrl = streamUrl;
   currentTracks = tracks;
-  currentEpisodeIndex = selectedAnime.providerEpisodes.findIndex(ep => String(ep.id || ep.episodeId || ep.number) === String(episodeId));
+  currentEpisodeIndex = selectedAnime.providerEpisodes.findIndex(ep => 
+    String(ep.id || ep.episodeId || ep.number) === String(episodeId)
+  );
 
-  const title = `Episode ${episodeNum} - ${selectedAnime.name || selectedAnime.title}`;
-  renderWatch(app, title, showDetails, null, null, toggleFullScreen, switchProxy, selectedAnime.recommendedAnimes || [], showAnimeDetails);
+  const title = `Episode ${episodeNum} - ${selectedAnime.name || selectedAnime.title || ''}`;
+  renderWatch(app, title, selectedAnime.recommendedAnimes || selectedAnime.relatedAnimes || [], showAnimeDetails);
 
-  playVideo(streamUrl, tracks);
+  playVideo(currentStreamUrl, currentTracks);
   updateEpisodeControls();
 }
+
+// ... rest of main.js stays exactly the same
 
 function playVideo(url, tracks = []) {
   const video = document.getElementById('videoPlayer');
