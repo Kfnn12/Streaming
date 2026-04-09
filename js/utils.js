@@ -11,13 +11,18 @@ export function normalizeAnime(a) {
 
 export function createAnimeCard(anime, onClick) {
   const card = document.createElement('div');
-  card.className = 'card';
+  card.className = 'card min-w-[150px] sm:min-w-[180px]';
+  let epBadge = '';
+  if (anime.episodes) {
+    const epNum = typeof anime.episodes === 'object' ? (anime.episodes.sub || anime.episodes.dub || '') : anime.episodes;
+    if (epNum) epBadge = `<div class="bg-zinc-900/90 text-gray-300 text-[10px] font-bold px-2 py-0.5 rounded border border-zinc-700 shadow-lg mt-1">EP ${epNum}</div>`;
+  }
   card.innerHTML = `
     <div class="relative rounded-2xl overflow-hidden shadow-xl bg-zinc-900 aspect-[2/3]">
       <img src="\( {anime.poster}" class="w-full h-full object-cover" loading="lazy" alt=" \){anime.name}">
       <div class="absolute top-2 right-2 flex flex-col items-end">
         <div class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-lg">${anime.type}</div>
-        ${anime.episodes ? `<div class="bg-zinc-900/90 text-gray-300 text-[10px] font-bold px-2 py-0.5 rounded border border-zinc-700 shadow-lg mt-1">EP ${anime.episodes}</div>` : ''}
+        ${epBadge}
       </div>
     </div>
     <h3 class="mt-3 text-sm sm:text-base font-semibold line-clamp-2 text-gray-200">${anime.name}</h3>
